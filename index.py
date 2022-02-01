@@ -7,7 +7,7 @@ from os import environ
 import json
 
 dotenv.load_dotenv()
-MONGODB_SECRET = environ.get("PVT_MONGODB")
+MONGODB_SECRET = environ.get("MONGODB_CONNSTRING")
 
 client = pymongo.MongoClient(MONGODB_SECRET)
 db = client.analytics
