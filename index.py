@@ -10,7 +10,7 @@ dotenv.load_dotenv()
 MONGODB_SECRET = environ.get("MONGODB_CONNSTRING")
 
 client = pymongo.MongoClient(MONGODB_SECRET)
-db = client.analytics
+db = client.gamedata
 leaderboardCollection = db.leaderboard
 
 app = Flask(__name__)
