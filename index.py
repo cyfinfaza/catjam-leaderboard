@@ -76,12 +76,22 @@ def report():
         if numAboveScore > 4:
             return error_json("Score must be greater than the #5 score")
         else:
-            leaderboardCollection.insert_one(
+            ip = (
+                request.headers["x-real-ip"]
+                if "x-real-ip" in request.headers
+                else "unknown"
+            )
+            leaderboardCollection.update_one(
+                {"initials": data["initials"]},
                 {
-                    "score": data["score"],
-                    "initials": data["initials"].upper(),
-                    "timestamp": datetime.utcnow(),
-                }
+                    "$set": {
+                        "score": data["score"],
+                        "initials": data["initials"].upper(),
+                        "timestamp": datetime.utcnow(),
+                        "ip": ip,
+                    }
+                },
+                upsert=True,
             )
             return success_json()
     else:
