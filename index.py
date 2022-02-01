@@ -72,7 +72,7 @@ def report():
         numAboveScore = leaderboardCollection.count_documents(
             {"score": {"$gte": data["score"]}}
         )
-        if numAboveScore > 5:
+        if numAboveScore > 4:
             return error_json("Score must be greater than the #5 score")
         else:
             leaderboardCollection.insert_one(
