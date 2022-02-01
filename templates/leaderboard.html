@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Leaderboard</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+
+		body {
+			background-color: black;
+			color: white;
+			font-family: "Major Mono Display", monospace;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100vw;
+			height: 100vh;
+			margin: 0;
+			padding: 8px;
+			box-sizing: border-box;
+		}
+
+		.board {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.scoreTable {
+			font-size: 2em;
+		}
+
+		.scoreTable td {
+			padding: 8px;
+		}
+
+		.scoreTable tr {
+			margin-bottom: 8px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="board">
+		<h1>CatJam</h1>
+		<table class="scoreTable">
+			{% for score in scores %}
+			<tr>
+				<td>{{ loop.index }}.</td>
+				<td>{{ score.initials }}</td>
+				<td>{{ score.score }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</body>
+
+</html>
