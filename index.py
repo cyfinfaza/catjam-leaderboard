@@ -59,8 +59,9 @@ def index():
     return render_template("leaderboard.html", scores=fetchLeaderboard())
 
 
-@app.route("/reportScore", methods=["POST"])
+@app.route("/reportScore", methods=["PUT"])
 def report():
+    print(request.data)
     data = request.get_json(force=True)
     if data and "score" in data and "initials" in data:
         if not (isinstance(data["initials"], str) and isinstance(data["score"], int)):
