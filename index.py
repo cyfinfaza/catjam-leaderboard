@@ -87,7 +87,7 @@ def report():
             return error_json("Malformed HMAC")
     if not verified:
         return error_json("Invalid HMAC")
-    return success_json()
+    # return success_json()
     data = request.get_json(force=True)
     if data and "score" in data and "initials" in data:
         if not (isinstance(data["initials"], str) and isinstance(data["score"], int)):
@@ -126,7 +126,7 @@ def report():
 
 @app.route("/leaderboard")
 def leaderboard():
-    return success_json([])
+    # return success_json([])
     return success_json(fetchLeaderboard())
 
 
