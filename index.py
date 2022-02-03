@@ -5,9 +5,12 @@ import pymongo
 import dotenv
 from os import environ
 import json
+import base64
+import hmac, hashlib
 
 dotenv.load_dotenv()
 MONGODB_SECRET = environ.get("MONGODB_CONNSTRING")
+HMAC_KEY = environ.get("HMAC_KEY")
 
 client = pymongo.MongoClient(MONGODB_SECRET)
 db = client.gamedata
@@ -54,6 +57,12 @@ def fetchLeaderboard():
     return leaderboard
 
 
+def verifyHMAC(payload, digest):
+    h = hmac.new(HMAC_KEY.encode(), payload, digestmod=hashlib.sha256)
+    print(h.digest)
+    return h.digest() == digest
+
+
 @app.route("/")
 def index():
     return render_template("leaderboard.html", scores=fetchLeaderboard())
@@ -62,6 +71,23 @@ def index():
 @app.route("/reportScore", methods=["PUT"])
 def report():
     print(request.data)
+    verified = False
+    if "Content-Authenticity-HMAC" not in request.headers:
+        return error_json("Missing HMAC")
+    else:
+        try:
+            hmacHeader = request.headers.get("Content-Authenticity-HMAC")
+            hmacDigest = base64.b64decode(hmacHeader)
+            print(hmacHeader)
+            print(hmacDigest)
+            # print verification
+            verified = verifyHMAC(request.data, hmacDigest)
+            print(verified)
+        except:
+            return error_json("Malformed HMAC")
+    if not verified:
+        return error_json("Invalid HMAC")
+    return success_json()
     data = request.get_json(force=True)
     if data and "score" in data and "initials" in data:
         if not (isinstance(data["initials"], str) and isinstance(data["score"], int)):
@@ -100,6 +126,7 @@ def report():
 
 @app.route("/leaderboard")
 def leaderboard():
+    return success_json([])
     return success_json(fetchLeaderboard())
 
 
