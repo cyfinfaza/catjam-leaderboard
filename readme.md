@@ -1,5 +1,5 @@
 # catjam-leaderboard
-the leaderboard for catjam
+the leaderboard for [catjam](https://cat.mattleopold.ml)
 ## Methods
 - GET `/`: visual leaderboard (HTML)  
 - GET `/leaderboard`: get JSON leaderboard in format `{ "status": "success", "data": [ { "initials": "AAA", "score": 12 }, ... ] }`  
