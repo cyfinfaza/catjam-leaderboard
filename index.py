@@ -11,6 +11,7 @@ import hmac, hashlib
 dotenv.load_dotenv()
 MONGODB_SECRET = environ.get("MONGODB_CONNSTRING")
 HMAC_KEY = environ.get("HMAC_KEY")
+GAME_NAME = environ.get("GAME_NAME")
 
 client = pymongo.MongoClient(MONGODB_SECRET)
 db = client.gamedata
@@ -65,7 +66,7 @@ def verifyHMAC(payload, digest):
 
 @app.route("/")
 def index():
-    return render_template("leaderboard.html", scores=fetchLeaderboard())
+    return render_template("leaderboard.html", scores=fetchLeaderboard(), gameName=GAME_NAME)
 
 
 @app.route("/reportScore", methods=["PUT"])
